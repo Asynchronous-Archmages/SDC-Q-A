@@ -74,9 +74,9 @@ paginated_answers AS (
   LIMIT $2 OFFSET $3
 )
 SELECT json_build_object (
-  'question', $4,
-  'page', $5,
-  'count', $6,
+  'question', $4::int,
+  'page', $5::int,
+  'count', $6::int,
   'results', json_agg(
     json_build_object(
       'answer_id', pa.answer_id,
@@ -100,7 +100,7 @@ pool.connect()
     })
     .catch(error => {
       client.release();
-      console.log('Error fetching answers');
+      console.log(error);
       res.status(500).send('Error fetching answers');
     })
   })
